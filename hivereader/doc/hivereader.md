@@ -32,6 +32,9 @@ hdfs dfs -mkdir -p /tmp/datax-hivereader
                     "name": "hivereader",
                     "parameter": {
                         "defaultFS": "hdfs://xxx:port",
+                        "zkquorum":"jdbc:hive2://xxx:2181,xxx:2181,xxx:2181/;serviceDiscoveryMode=zooKeeper;zooKeeperNamespace=hiveserver2",
+                        "username":"xxxx",
+                        "password":"xxxx",
                         "sql": "select * from user",
                         "hadoopConfig": {
                         },
@@ -53,10 +56,38 @@ hdfs dfs -mkdir -p /tmp/datax-hivereader
 * **defaultFS**
 
   * 描述：Hadoop hdfs文件系统namenode节点地址。
+  * 此参数为执行SQL时，使用hive -e 模式执行，此参数与zkquorum选择填写一个即可，都填则优先读取。
 
     **目前HiveReader已经支持Kerberos认证，如果需要权限认证，则需要用户配置kerberos参数，见下面**
 
-  * 必选：是
+  * 必选：是  (与zkquorum选填一个即可）
+
+  * 默认值：无
+
+* **zkquorum**
+
+  * 描述：Hive集群文件系统对应ZK集群。
+  * 此参数为执行SQL时，使用beeline -e模式执行，当defaultFS不填写时，或者hive -e模式执行失败时生效。
+
+  * 必选：是  (与defaultFS选填一个即可）
+
+  * 默认值：无
+
+* **username**
+
+  * 描述：hive集群验证用户名
+  * 此参数为执行SQL时，使用beeline -e模式执行时使用，当defaultFS不填写时，或者hive -e模式执行失败时生效。
+
+  * 必选：否  (当zkquorum填写时，必填）
+
+  * 默认值：无
+
+* **password**
+
+  * 描述：Hive集群验证密码。
+  * 此参数为执行SQL时，使用beeline -e模式执行时使用，当defaultFS不填写时，或者hive -e模式执行失败时生效。
+
+  * 必选：否  (当zkquorum填写时，必填）
 
   * 默认值：无
 
