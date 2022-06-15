@@ -92,11 +92,7 @@ DataX目前已经有了比较全面的插件体系，主流的RDBMS数据库、N
 请点击：[DataX插件开发宝典](https://github.com/alibaba/DataX/blob/master/dataxPluginDev.md)
 
 # 重要版本更新说明
-
+2022/6/15 支持了从hive reader 查询SQL模式
 
 # 项目成员
-
-核心Contributions: 张丰
-
-
 
