@@ -13,6 +13,9 @@ public final class Key {
      */
     public final static String DEFAULT_FS = "defaultFS";
     public final static String SQL = "sql";
+    public final static String ZKQUORUM = "zkquorum";
+    public final static String USERNAME = "username";
+    public final static String PASSWORD = "password";
     public static final String HADOOP_CONFIG = "hadoopConfig";
     public static final String HAVE_KERBEROS = "haveKerberos";
     public static final String KERBEROS_KEYTAB_FILE_PATH = "kerberosKeytabFilePath";

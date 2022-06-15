@@ -15,7 +15,7 @@ import java.util.UUID;
 /**
  * Hive 自定义 SQL reader
  *
- * @author 奔波儿灞
+ * @author ZF
  * @since 1.0
  */
 public class HiveReader extends Reader {
@@ -88,6 +88,9 @@ public class HiveReader extends Reader {
 
         private Configuration taskConfig = null;
         private String sql = null;
+        private String zkquorum = null;
+        private String username = null;
+        private String password = null;
         private String tmpTableName = null;
         private String tmpPath = null;
         private DFSUtil dfsUtil = null;
@@ -98,6 +101,9 @@ public class HiveReader extends Reader {
             LOG.info("init() begin...");
             taskConfig = super.getPluginJobConf();
             sql = taskConfig.getString(Key.SQL);
+            zkquorum = taskConfig.getString(Key.ZKQUORUM);
+            username = taskConfig.getString(Key.USERNAME);
+            password = taskConfig.getString(Key.PASSWORD);
             tmpTableName = getTmpTableName();
             tmpPath = getTmpPath(tmpTableName);
             dfsUtil = new DFSUtil(taskConfig);
@@ -119,10 +125,17 @@ public class HiveReader extends Reader {
             LOG.info("prepare() hive cmd: {}", hiveCmd);
             try {
                 if (!ShellUtil.exec(new String[]{"hive", "-e", DOUBLE_QUOTATION + hiveCmd + DOUBLE_QUOTATION})) {
-                    throw DataXException.asDataXException(HiveReaderErrorCode.SHELL_ERROR, "创建hive临时表脚本执行失败");
+                    throw DataXException.asDataXException(HiveReaderErrorCode.SHELL_ERROR, "hive -e 方式创建失败");
                 }
-            } catch (Exception e) {
-                throw DataXException.asDataXException(HiveReaderErrorCode.SHELL_ERROR, "创建hive临时表脚本执行失败", e);
+            } catch (Exception e1) {
+                LOG.info("beeline -e {}", hiveCmd);
+                try {
+                    if (!ShellUtil.exec(new String[]{"beeline", "-u",DOUBLE_QUOTATION +zkquorum+ DOUBLE_QUOTATION, "-n",username, "-p" ,password, "-e", DOUBLE_QUOTATION + hiveCmd + DOUBLE_QUOTATION})) {
+                        throw DataXException.asDataXException(HiveReaderErrorCode.SHELL_ERROR, "beeline -e 方式创建失败");
+                    }
+                } catch (Exception e) {
+                    throw DataXException.asDataXException(HiveReaderErrorCode.SHELL_ERROR, "创建hive临时表脚本执行失败", e);
+                }
             }
             sourceFiles = dfsUtil.getAllFiles(Collections.singletonList(tmpPath), Constant.ORC);
             LOG.info("prepare() end...");
