@@ -93,62 +93,10 @@ DataX目前已经有了比较全面的插件体系，主流的RDBMS数据库、N
 
 # 重要版本更新说明
 
-DataX 后续计划月度迭代更新，也欢迎感兴趣的同学提交 Pull requests，月度更新内容会介绍介绍如下。
-
-- [datax_v202205]（https://github.com/alibaba/DataX/releases/tag/datax_v202205)
-    - 涉及通道能力更新（MaxCompute、Hologres、OSS、Tdengine等）、安全漏洞更新、通用打包更新等
-
 
 # 项目成员
 
-核心Contributions: 言柏 、枕水、秋奇、青砾、一斅、云时
-
-感谢天烬、光戈、祁然、巴真、静行对DataX做出的贡献。
-
-# License
-
-This software is free to use under the Apache License [Apache license](https://github.com/alibaba/DataX/blob/master/license.txt).
-
-# 
-请及时提出issue给我们。请前往：[DataxIssue](https://github.com/alibaba/DataX/issues)
-
-# 开源版DataX企业用户
-
-![Datax-logo](https://github.com/alibaba/DataX/blob/master/images/datax-enterprise-users.jpg)
-
-```
-长期招聘 联系邮箱：datax@alibabacloud.com
-【JAVA开发职位】
-职位名称：JAVA资深开发工程师/专家/高级专家
-工作年限 : 2年以上
-学历要求 : 本科（如果能力靠谱，这些都不是条件）
-期望层级 : P6/P7/P8
-
-岗位描述：
-    1. 负责阿里云大数据平台（数加）的开发设计。 
-    2. 负责面向政企客户的大数据相关产品开发；
-    3. 利用大规模机器学习算法挖掘数据之间的联系，探索数据挖掘技术在实际场景中的产品应用 ；
-    4. 一站式大数据开发平台
-    5. 大数据任务调度引擎
-    6. 任务执行引擎
-    7. 任务监控告警
-    8. 海量异构数据同步
-
-岗位要求：
-    1. 拥有3年以上JAVA Web开发经验；
-    2. 熟悉Java的基础技术体系。包括JVM、类装载、线程、并发、IO资源管理、网络；
-    3. 熟练使用常用Java技术框架、对新技术框架有敏锐感知能力；深刻理解面向对象、设计原则、封装抽象；
-    4. 熟悉HTML/HTML5和JavaScript；熟悉SQL语言；
-    5. 执行力强，具有优秀的团队合作精神、敬业精神；
-    6. 深刻理解设计模式及应用场景者加分；
-    7. 具有较强的问题分析和处理能力、比较强的动手能力，对技术有强烈追求者优先考虑；
-    8. 对高并发、高稳定可用性、高性能、大数据处理有过实际项目及产品经验者优先考虑；
-    9. 有大数据产品、云产品、中间件技术解决方案者优先考虑。
-````
-
-用户咨询支持：
-
-钉钉群目前暂时受到了一些管控策略影响，建议大家有问题优先在这里提交问题 Issue，DataX研发和社区会定期回答Issue中的问题，知识库丰富后也能帮助到后来的使用者。
+核心Contributions: 张丰
 
 
 
