@@ -67,6 +67,7 @@
 
         <module>ossreader</module>
         <module>hdfsreader</module>
+        <module>hivereader</module>
         <module>ftpreader</module>
         <module>txtfilereader</module>
         <module>streamreader</module>
