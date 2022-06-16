@@ -46,4 +46,8 @@ public class Key {
 
     public static final String PARQUET_SCHEMA = "parquetSchema";
     public static final String PARQUET_MERGE_RESULT = "parquetMergeResult";
+    public final static String ZKQUORUM = "zkquorum";
+    public final static String USERNAME = "username";
+    public final static String PASSWORD = "password";
+    public final static String SQL = "sql";
 }

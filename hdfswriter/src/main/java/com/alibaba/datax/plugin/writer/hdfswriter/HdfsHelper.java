@@ -469,6 +469,33 @@ public  class HdfsHelper {
         return columnTypeInspectors;
     }
 
+    /**
+     * 在hdfs上创建目录
+     *
+     * @param filePath 需要创建的目录
+     * @return boolean
+     */
+    public boolean createPath(String filePath) {
+        Path path = new Path(filePath);
+        boolean exist = false;
+        try {
+            if (fileSystem.exists(path)) {
+                String message = String.format("文件路径[%s]已存在，无需创建！",
+                        "message:filePath =" + filePath);
+                LOG.info(message);
+                exist = true;
+            } else {
+                exist = fileSystem.mkdirs(path);
+            }
+        } catch (IOException e) {
+            String message = String.format("创建文件路径[%s]时发生网络IO异常,请检查您的网络是否正常！",
+                    "message:filePath =" + filePath);
+            LOG.error(message);
+            throw DataXException.asDataXException(HdfsWriterErrorCode.CONNECT_HDFS_IO_ERROR, e);
+        }
+        return exist;
+    }
+
     public OrcSerde getOrcSerde(Configuration config){
         String fieldDelimiter = config.getString(Key.FIELD_DELIMITER);
         String compress = config.getString(Key.COMPRESS);
