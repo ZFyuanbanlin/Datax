@@ -194,7 +194,7 @@ HdfsWriter提供向HDFS文件系统指定路径中写入TEXTFile文件和ORCFile
 
   * 描述：Hive集群文件系统对应ZK集群。
     ```sql
-"jdbc:hive2://node1:2181,node2:2181,node3:2181/dwd;serviceDiscoveryMode=zooKeeper;zooKeeperNamespace=hiveserver2"
+    "jdbc:hive2://node1:2181,node2:2181,node3:2181/dwd;serviceDiscoveryMode=zooKeeper;zooKeeperNamespace=hiveserver2"
     ```
   * 为了连接hiveserver2时执行SQL语句使用，此参数当sql填写时必填。
   * 必选：否
