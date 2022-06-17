@@ -102,8 +102,13 @@ HdfsWriter提供向HDFS文件系统指定路径中写入TEXTFile文件和ORCFile
                     "name": "hdfswriter",
                     "parameter": {
                         "defaultFS": "hdfs://xxx:port",
+                          "defaultFS": "hdfs://xxx.xxx.xxx.xxx:8020",
+                          "zkquorum":"jdbc:hive2://node1:2181,node2:2181,node3:2181/dwd;serviceDiscoveryMode=zooKeeper;zooKeeperNamespace=hiveserver2",
+                          "username":"xxxx",
+                          "password":"xxxx",
+                          "sql": "alter table user add if not exists partition (p_f='20220617');",
                         "fileType": "orc",
-                        "path": "/user/hive/warehouse/writerorc.db/orcfull",
+                        "path": "/user/hive/warehouse/writerorc.db/user/p_f=20220617",
                         "fileName": "xxxx",
                         "column": [
                             {
@@ -155,7 +160,7 @@ HdfsWriter提供向HDFS文件系统指定路径中写入TEXTFile文件和ORCFile
                                 "type": "TIMESTAMP"
                             }
                         ],
-                        "writeMode": "append",
+                        "writeMode": "overwrite",
                         "fieldDelimiter": "\t",
                         "compress":"NONE"
                     }
@@ -171,10 +176,44 @@ HdfsWriter提供向HDFS文件系统指定路径中写入TEXTFile文件和ORCFile
 * **defaultFS**
 
 	* 描述：Hadoop hdfs文件系统namenode节点地址。格式：hdfs://ip:端口；例如：hdfs://127.0.0.1:9000<br />
-
 	* 必选：是 <br />
-
 	* 默认值：无 <br />
+
+
+* **sql**
+
+  * 描述：自定义sql，用于为表增加分区，当需要往例如：
+
+    ```sql
+    alter table user add if not exists partition (p_f='20220617');
+    ```
+  * 必选：否
+  * 默认值：无
+
+* **zkquorum**
+
+  * 描述：Hive集群文件系统对应ZK集群。
+    ```sql
+"jdbc:hive2://node1:2181,node2:2181,node3:2181/dwd;serviceDiscoveryMode=zooKeeper;zooKeeperNamespace=hiveserver2"
+```
+  * 为了连接hiveserver2时执行SQL语句使用，此参数当sql填写时必填。
+  * 必选：否
+  * 默认值：无
+
+* **username**
+
+  * 描述：hive集群验证用户名
+  * 此参数为执行SQL时，此参数当sql填写时必填。
+  * 必选：否
+  * 默认值：无
+
+* **password**
+
+  * 描述：Hive集群验证密码。
+  * 此参数为执行SQL时，此参数当sql填写时必填
+  * 必选：否
+  * 默认值：无
+
 
 * **fileType**
 
