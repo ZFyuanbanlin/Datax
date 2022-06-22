@@ -187,9 +187,9 @@ public class HdfsWriter extends Writer {
                 isExistFile = true;
             }
              if ("truncate".equalsIgnoreCase(writeMode) && isExistFile ) {
-             LOG.info(String.format("由于您配置了writeMode truncate, 开始清理 [%s] 下面以 [%s] 开头的内容",
-             path, fileName));
-             hdfsHelper.deleteFiles(existFilePaths);
+                 LOG.info(String.format("由于您配置了writeMode truncate, 开始清理 [%s] 下面以 [%s] 开头的内容",
+                 path, fileName));
+                 hdfsHelper.deleteFiles(existFilePaths);
              } else if ("append".equalsIgnoreCase(writeMode)) {
                 LOG.info(String.format("由于您配置了writeMode append, 写入前不做清理工作, [%s] 目录下写入相应文件名前缀  [%s] 的文件",
                         path, fileName));
@@ -202,15 +202,32 @@ public class HdfsWriter extends Writer {
                 LOG.error(String.format("冲突文件列表为: [%s]", StringUtils.join(allFiles, ",")));
                 throw DataXException.asDataXException(HdfsWriterErrorCode.ILLEGAL_VALUE,
                         String.format("由于您配置了writeMode nonConflict,但您配置的path: [%s] 目录不为空, 下面存在其他文件或文件夹.", path));
-            }else if ("overwrite".equalsIgnoreCase(writeMode) && isExistFile) {
-                LOG.info(String.format("由于您配置了writeMode overwrite,  [%s] 下面的内容将被覆盖重写", path));
-                hdfsHelper.deleteFiles(existFilePaths);
             }
+             // 此时不删这个目录
+//             else if ("overwrite".equalsIgnoreCase(writeMode) && isExistFile) {
+//                LOG.info(String.format("由于您配置了writeMode overwrite,  [%s] 下面的内容将被覆盖重写", path));
+//                hdfsHelper.deleteFiles(existFilePaths);
+//            }
         }
 
         @Override
         public void post() {
-            hdfsHelper.renameFile(tmpFiles, endFiles);
+            if ("overwrite".equals(writeMode)) {
+                LOG.info("start delete file dir [{}] .", path);
+                hdfsHelper.deleteFilesFromDir(new Path(path));
+                LOG.info("finish delete file(s).");
+            }
+            // 获取临时文件名称，文件名称
+            Iterator it1=tmpFiles.iterator();
+            String tmpStorePath = it1.next().toString();
+            // 删除目录
+            Path srcFilePah = new Path(tmpStorePath);
+            Path tmpFilesParent = srcFilePah.getParent();
+
+            hdfsHelper.moveFilesToDest(new Path(tmpStorePath), new Path(this.path));
+            // 删除临时目录
+            hdfsHelper.deleteDir(tmpFilesParent);
+//            hdfsHelper.renameFile(tmpFiles, endFiles);
         }
 
         @Override

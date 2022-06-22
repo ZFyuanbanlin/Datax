@@ -31,6 +31,7 @@ import parquet.schema.OriginalType;
 import parquet.schema.PrimitiveType;
 import parquet.schema.Types;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -653,4 +654,49 @@ public  class HdfsHelper {
         }
         return typeBuilder.named("m").toString();
     }
+
+    /**
+     * 删除文件，同步数据之后，再将hdfs的某个目录下文件给删掉。
+     * @param dir  the dir directory
+     */
+    public void deleteFilesFromDir(Path dir)
+    {
+        try {
+            final RemoteIterator<LocatedFileStatus> files = fileSystem.listFiles(dir, false);
+            while (files.hasNext()) {
+                final LocatedFileStatus next = files.next();
+                fileSystem.deleteOnExit(next.getPath());
+            }
+        }
+        catch (FileNotFoundException fileNotFoundException) {
+            throw new ZFDataxException(HdfsWriterErrorCode.FILE_NOT_FOUND, fileNotFoundException.getMessage());
+        }
+        catch (IOException ioException) {
+            throw new ZFDataxException(HdfsWriterErrorCode.IO_ERROR, ioException.getMessage());
+        }
+    }
+
+    /**
+     * 将 sourceDir 目录下面的文件，移动到 targetDir 目录
+     *
+     * @param sourceDir the source directory
+     * @param targetDir the target directory
+     */
+    public void moveFilesToDest(Path sourceDir, Path targetDir)
+    {
+        try {
+            final FileStatus[] fileStatuses = fileSystem.listStatus(sourceDir);
+            for (FileStatus file : fileStatuses) {
+                if (file.isFile() && file.getLen() > 0) {
+                    LOG.info("start move file [{}] to dir [{}].", file.getPath(), targetDir.getName());
+                    fileSystem.rename(file.getPath(), new Path(targetDir, file.getPath().getName()));
+                }
+            }
+        }
+        catch (IOException e) {
+            throw ZFDataxException.asZFDataxException(HdfsWriterErrorCode.IO_ERROR, e);
+        }
+        LOG.info("finish move file(s).");
+    }
+
 }

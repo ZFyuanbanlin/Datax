@@ -20,7 +20,10 @@ public enum HdfsWriterErrorCode implements ErrorCode {
      * 执行shell失败
      */
     SHELL_ERROR("HiveReader-09", "执行shell失败"),
-    KERBEROS_LOGIN_ERROR("HdfsWriter-09", "KERBEROS认证失败");
+    KERBEROS_LOGIN_ERROR("HdfsWriter-09", "KERBEROS认证失败"),
+    FILE_NOT_FOUND("HdfsWriter-10", "文件或目录不存在."),
+    IO_ERROR("HdfsWriter-11", "IO异常."),
+            ;
 
     private final String code;
     private final String description;
