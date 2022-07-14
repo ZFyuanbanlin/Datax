@@ -217,14 +217,18 @@ public class HdfsWriter extends Writer {
                 hdfsHelper.deleteFilesFromDir(new Path(path));
                 LOG.info("finish delete file(s).");
             }
-            // 获取临时文件名称，文件名称
+            // fhf获取临时文件名称，文件名称
             Iterator it1=tmpFiles.iterator();
-            String tmpStorePath = it1.next().toString();
-            // 删除目录
-            Path srcFilePah = new Path(tmpStorePath);
-            Path tmpFilesParent = srcFilePah.getParent();
+            Path tmpFilesParent = null;
+//            HashSet<String>
+            while(it1.hasNext()) {
+                String tmpStorePath = it1.next().toString();
+                // 删除目录
+                Path srcFilePah = new Path(tmpStorePath);
+                tmpFilesParent = srcFilePah.getParent();
 
-            hdfsHelper.moveFilesToDest(new Path(tmpStorePath), new Path(this.path));
+                hdfsHelper.moveFilesToDest(new Path(tmpStorePath), new Path(this.path));
+            }
             // 删除临时目录
             hdfsHelper.deleteDir(tmpFilesParent);
 //            hdfsHelper.renameFile(tmpFiles, endFiles);
